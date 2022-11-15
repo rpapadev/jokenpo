@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pedra, Papel ou Tesoura</title>
+</head>
+<body>
+    <style>
+        .player-options img,
+        .enemy-options img{
+            max-width: 200px;
+            opacity: 0.3;
+            cursor: pointer;
+        }
+
+        .player-options, .enemy-options{
+            width: 50%;
+            text-align: center;
+        }
+
+        .align{
+            display: flex;
+        }
+    </style>
+
+    <h1 style="text-align: center;">Pedra, Papel ou Tesoura</h1><hr>
+
+    <div class="align">
+        <div class="player-options">
+            <h2>Player</h2>
+            <div><img opt="rock" src="rock.png" alt="papel"></div>
+            <div><img opt="paper" src="paper.png" alt="papel"></div>
+            <div><img opt="scissor" src="scissor.png" alt="papel"></div>
+        </div><!--player-options-->
+        <div class="enemy-options">
+            <h2>Inimigo</h2>
+            <div><img opt="rock" src="rock.png" alt="papel"></div>
+            <div><img opt="paper" src="paper.png" alt="papel"></div>
+            <div><img opt="scissor" src="scissor.png" alt="papel"></div>
+        </div><!--player-options-->
+    </div><!--align-->
+
+    <h2 style="text-align: center;" class="vencedor"></h2>
+
+    <script>
+        var elementos = document.querySelectorAll('.player-options div > img');
+        var playerOpt = "";
+        var enemyOpt = "";
+
+        resetEnemy = () =>{
+            const enemyOptions = document.querySelectorAll('.enemy-options div');
+
+            for (var i = 0; i < enemyOptions.length; i++) {
+                    enemyOptions[i].childNodes[0].style.opacity = 0.3;
+                }
+        }
+
+        validarVitoria = () =>{
+            let vencedor = document.querySelector('.vencedor');
+            if (playerOpt == "paper") {
+                if (enemyOpt == "paper") {
+                    vencedor.innerHTML = 'Empate!';
+                }else if (enemyOpt == "scissor"){
+                    vencedor.innerHTML = 'Você perdeu!';
+                }else if (enemyOpt == "rock") {
+                    vencedor.innerHTML = 'Você ganhou!';
+                }
+            }
+
+            if (playerOpt == "rock") {
+                if (enemyOpt == "rock") {
+                    vencedor.innerHTML = 'Empate!';
+                }else if (enemyOpt == "paper"){
+                    vencedor.innerHTML = 'Você perdeu!';
+                }else if (enemyOpt == "scissor") {
+                    vencedor.innerHTML = 'Você ganhou!';
+                }
+            }
+
+            if (playerOpt == "scissor") {
+                if (enemyOpt == "scissor") {
+                    vencedor.innerHTML = 'Empate!';
+                }else if (enemyOpt == "rock"){
+                    vencedor.innerHTML = 'Você perdeu!';
+                }else if (enemyOpt == "paper") {
+                    vencedor.innerHTML = 'Você ganhou!';
+                }
+            }
+        }
+
+        enemyPlay = () =>{
+            let rand = Math.floor(Math.random()*3);
+
+            const enemyOptions = document.querySelectorAll('.enemy-options div');
+
+            resetEnemy();
+
+            for (var i = 0; i < enemyOptions.length; i++) {
+                if (i == rand) {
+                    enemyOptions[i].childNodes[0].style.opacity = 1;
+                    enemyOpt = enemyOptions[i].childNodes[0].getAttribute('opt');
+                }
+            }
+
+            validarVitoria();
+        }
+
+        resetOpacityPlayer = () =>{
+            for (var i = 0; i < elementos.length; i++) {
+                elementos[i].style.opacity = 0.3;
+            }
+        }
+
+        for (var i = 0; i < elementos.length; i++) {
+            elementos[i].addEventListener('click', (t) =>{
+                resetOpacityPlayer();
+
+                t.target.style.opacity = 1;
+                playerOpt = t.target.getAttribute('opt');
+
+                enemyPlay();
+            });
+        }
+    </script>
+</body>
+</html>
